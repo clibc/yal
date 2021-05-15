@@ -15,7 +15,10 @@ typedef struct{
 
 
 struct Token{
+	
 	union{
-		int 
-	};
+		int int_value;
+		float float_value;
+		char char_value;
+	}data;
 };
