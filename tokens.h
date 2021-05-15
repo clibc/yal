@@ -1,6 +1,6 @@
 enum ParserSymbols{
 	DIGIT,
-	WORD,
+	IDENTIFIER,
 	LEFT_PAR,
 	RIGHT_PAR,
 	PLUS_OP,
@@ -8,5 +8,14 @@ enum ParserSymbols{
 	DIVIDE_OP,
 };
 
+typedef struct{
+	char* name;
+	void* data;
+}Variable;
+
+
 struct Token{
+	union{
+		int 
+	};
 };
