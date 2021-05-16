@@ -1,24 +1,20 @@
-enum ParserSymbols{
-	DIGIT,
+typedef enum{
+	NUMBER,
 	IDENTIFIER,
 	LEFT_PAR,
 	RIGHT_PAR,
 	PLUS_OP,
 	MINUS_OP,
 	DIVIDE_OP,
-};
+} TokenType;
+
 
 typedef struct{
-	char* name;
-	void* data;
-}Variable;
-
-
-struct Token{
+	TokenType type;
 	
 	union{
 		int int_value;
 		float float_value;
 		char char_value;
 	}data;
-};
+} Token;

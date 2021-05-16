@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include "tokens.h"
 
 enum Parser_Types{
 	LITERAL,
@@ -18,7 +19,15 @@ int main(void) {
 
 	int i = 0;
 	int c = 0;
-   
+
+	Token *tokens = malloc(sizeof(Token) * 5);
+
+	tokens[0].type = NUMBER;
+	tokens[0].data.int_value = 1;
+	tokens[0].data.float_value = 1.0f;
+	tokens[0].data.char_value = 'A';
+
+	
 	while(str[i] != '\n'){
 		if(isdigit(str[i])){
 			storage[c] = str[i];
