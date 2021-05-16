@@ -1,3 +1,6 @@
+#ifndef TOKENS_H
+#define TOKENS_H
+
 typedef enum{
 	NUMBER,
 	IDENTIFIER,
@@ -18,3 +21,5 @@ typedef struct{
 		char char_value;
 	}data;
 } Token;
+
+#endif
