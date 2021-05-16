@@ -4,13 +4,8 @@
 typedef enum{
 	NUMBER,
 	IDENTIFIER,
-	LEFT_PAR,
-	RIGHT_PAR,
-	PLUS_OP,
-	MINUS_OP,
-	DIVIDE_OP,
+	OPERATOR
 } TokenType;
-
 
 typedef struct{
 	TokenType type;
@@ -22,4 +17,4 @@ typedef struct{
 	}data;
 } Token;
 
-#endif
+#endif // TOKENS_H

@@ -3,11 +3,6 @@
 #include <ctype.h>
 #include "tokens.h"
 
-enum Parser_Types{
-	LITERAL,
-	OPERATOR
-};
-
 int main(void) {
 	/// 86 + 78 - 36 
 	char* str = NULL;
@@ -21,13 +16,7 @@ int main(void) {
 	int c = 0;
 
 	Token *tokens = malloc(sizeof(Token) * 5);
-
-	tokens[0].type = NUMBER;
-	tokens[0].data.int_value = 1;
-	tokens[0].data.float_value = 1.0f;
-	tokens[0].data.char_value = 'A';
-
-	
+	int tokenCounter = 0;
 	while(str[i] != '\n'){
 		if(isdigit(str[i])){
 			storage[c] = str[i];
@@ -42,14 +31,23 @@ int main(void) {
 				c = 0;
 				int res = atoi(&storage[0]);
 				printf("Got an integer :%d\n", res);
+				tokens[tokenCounter].type = NUMBER;
+				tokens[tokenCounter].data.int_value = res;
+				tokenCounter++;
 			}
 			
 			switch(str[i]){
 			case '+':
 				printf("Plus detected\n");
+				tokens[tokenCounter].type = OPERATOR;
+				tokens[tokenCounter].data.char_value = '+';
+				tokenCounter++;
 				break;
 			case '-':
 				printf("Minus detected\n");
+				tokens[tokenCounter].type = OPERATOR;
+				tokens[tokenCounter].data.char_value = '-';
+				tokenCounter++;
 				break;
 			case ' ':
 				break;
