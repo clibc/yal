@@ -4,13 +4,16 @@
 #include "parser.h"
 
 int main(void) {
-	/// 86 + 78 - 36
-	char* str = NULL;
-	size_t line_size;
-	getline(&str, &line_size, stdin);
-	fprintf(stdout, str);
+	/// 86 + 78 - 36 
+	/* char* str = NULL; */
+	/* size_t line_size; */
+	/* getline(&str, &line_size, stdin); */
+	/* fprintf(stdout, str); */
 
-	parse_line(str, line_size);
+	char line[100];
+	fgets(line, 100, stdin);
+
+	parse_line(line, sizeof(line));
 
 	return EXIT_SUCCESS;
 }
