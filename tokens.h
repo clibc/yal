@@ -4,7 +4,8 @@
 typedef enum{
 	NUMBER,
 	IDENTIFIER,
-	OPERATOR
+	OPERATOR,
+	TYPE_KEYWORD
 } TokenType;
 
 typedef struct{
