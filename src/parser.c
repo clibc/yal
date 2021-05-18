@@ -2,12 +2,12 @@
 #include <ctype.h>
 #include <stdio.h>
 
+static Token tokens[30];
+static int tokenCounter = 0; // count of tokens
+
 void parse_line(char* str, size_t size){
-	Token tokens[30]; // We store tokens here
-
 	int integer_count = 0; // count of parsed intigers
-	int tokenCounter = 0; // count of tokens
-
+	
 	char int_storage[10]; // Integer
 	char identifier_storage[100]; // For storing yet defined identifiers
 
@@ -24,27 +24,28 @@ void parse_line(char* str, size_t size){
 			{
 				switch(str[i]){
 				case IDENTIFIER_PLUS:
-					printf("Plus detected\n");
 					tokens[tokenCounter].type = OPERATOR;
 					tokens[tokenCounter].data.char_value = '+';
 					tokenCounter++;
 					break;
 				case IDENTIFIER_MINUS:
-					printf("Minus detected\n");
 					tokens[tokenCounter].type = OPERATOR;
 					tokens[tokenCounter].data.char_value = '-';
 					tokenCounter++;
 					break;
 				case ' ':
+				case '\n':
 					break;
-
 				default:
-					printf("Undefined Identifier\n");
-					exit(EXIT_FAILURE);
+					printf("Undefined Identifier %c\nASCII index : %d\n", str[i], (int)str[i]);
+					break;
 				}
 			}
+		if(str[i] == '\0')
+			break;
+
 	}
-	
+
 }
 
 int parse_integer(char* str, Token* int_token){
@@ -65,4 +66,24 @@ int parse_integer(char* str, Token* int_token){
 
 	int_token->data.int_value = atoi(&storage[0]);
 	return shifted_char-1;
+}
+
+void dump_tokens(){
+	for(int i = 0; i < tokenCounter; ++i){
+		Token *token = &tokens[i];
+		printf("Token type : ");
+		switch(token->type){
+		case NUMBER:
+			printf("NUMBER\n");
+			printf("Value : %d\n", token->data.int_value);
+			break;
+		case OPERATOR:
+			printf("OPERATOR\n");
+			printf("Value : %c\n", token->data.char_value);
+			break;
+		default:
+			break;
+		}
+		printf("------------\n");
+	}
 }

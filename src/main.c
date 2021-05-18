@@ -15,5 +15,6 @@ int main(void) {
 
 	parse_line(line, sizeof(line));
 
+	dump_tokens();
 	return EXIT_SUCCESS;
 }

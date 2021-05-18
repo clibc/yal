@@ -4,11 +4,11 @@ FLAGS=-ggdb -Wall -Wextra -std=c17 -pedantic
 all:main.o parser.o
 	$(CC) $(FLAGS) -o a.out parser.o main.o
 
-main.o:main.c
-	$(CC) $(FLAGS) -c main.c 
+main.o:./src/main.c
+	$(CC) $(FLAGS) -c ./src/main.c 
 
-parser.o:parser.c
-	$(CC) $(FLAGS) -c parser.c 
+parser.o:./src/parser.c
+	$(CC) $(FLAGS) -c ./src/parser.c 
 
 clean:
 	rm -f *.o *.out *.core

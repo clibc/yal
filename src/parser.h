@@ -6,6 +6,7 @@
 
 void parse_line(char* str, size_t size);
 int  parse_integer(char* str, Token* int_token);
+void dump_tokens();
 
 // Parser definitions
 #define IDENTIFIER_INT     "int"
