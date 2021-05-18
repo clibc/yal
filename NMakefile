@@ -4,11 +4,11 @@ FLAGS=/nologo /Zi /EHsc /W3 /std:c17
 all:main.obj parser.obj
 	$(CC) $(FLAGS) /Fea.exe parser.obj main.obj
 
-main.obj:main.c
-	$(CC) $(FLAGS) /c /Fomain.obj main.c 
+main.obj:./src/main.c
+	$(CC) $(FLAGS) /c /Fomain.obj ./src/main.c 
 
-parser.obj:parser.c
-	$(CC) $(FLAGS) /c /Foparser.obj parser.c 
+parser.obj:./src/parser.c
+	$(CC) $(FLAGS) /c /Foparser.obj ./src/parser.c 
 
 clean:
 	del *.obj *.exe *.ilk *.pdb
