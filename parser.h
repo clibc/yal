@@ -13,4 +13,4 @@ int  parse_integer(char* str, Token* int_token);
 #define IDENTIFIER_PLUS    '+'
 #define IDENTIFIER_MINUS   '-'
 
-#endif //
+#endif // PARSER_H

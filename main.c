@@ -4,7 +4,7 @@
 #include "parser.h"
 
 int main(void) {
-	/// 86 + 78 - 36 
+	/// 86 + 78 - 36
 	/* char* str = NULL; */
 	/* size_t line_size; */
 	/* getline(&str, &line_size, stdin); */
