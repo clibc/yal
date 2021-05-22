@@ -2,10 +2,12 @@
 #define TOKENS_H
 
 typedef enum{
-	NUMBER,
 	IDENTIFIER,
+	KEYWORD,
 	OPERATOR,
-	TYPE_KEYWORD
+	LITERAL,
+	SEPERATOR,
+	COMMENT,
 } TokenType;
 
 typedef struct{
