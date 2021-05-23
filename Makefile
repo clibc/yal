@@ -1,5 +1,5 @@
 CC=gcc
-FLAGS=-ggdb -Wall -Wextra -std=c17 -pedantic
+FLAGS=-ggdb -Wall -Wextra -std=c99 -pedantic
 
 all:main.o lexer.o
 	$(CC) $(FLAGS) -o a.out lexer.o main.o
