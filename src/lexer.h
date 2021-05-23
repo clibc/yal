@@ -5,15 +5,21 @@
 
 void lex_line(char*, size_t);
 int  lex_integer(char*, Token*);
+int  lex_entity(char* str, Token* s_token);
 void dump_tokens();
 
 // Lexer definitions
-#define KEYWORD_INT       "int"
-#define KEYWORD_FLOAT     "float"
-#define OPERATOR_PLUS     '+'
-#define OPERATOR_MINUS    '-'
-#define OPERATOR_MULTIPLY '*'
-#define OPERATOR_DEVIDE   '/'
-#define OPERATOR_EQUAL    '='
+#define KEYWORD_INT        "int"
+#define KEYWORD_FLOAT      "float"
+#define OPERATOR_PLUS      '+'
+#define OPERATOR_MINUS     '-'
+#define OPERATOR_MULTIPLY  '*'
+#define OPERATOR_DEVIDE    '/'
+#define OPERATOR_EQUAL     '='
+
+#define WHITESPACE_TAB     '\t'
+#define WHITESPACE_SPACE   ' '
+#define WHITESPACE_NEWLINE '\n'
+
 
 #endif // LEXER_H

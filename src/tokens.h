@@ -14,9 +14,10 @@ typedef struct{
 	TokenType type;
 	
 	union{
-		int int_value;
+		int   int_value;
 		float float_value;
-		char char_value;
+		char  char_value;
+		char  entity[20]; 
 	}data;
 } Token;
 
