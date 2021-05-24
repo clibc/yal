@@ -1,8 +1,8 @@
 CC=gcc
 FLAGS=-ggdb -Wall -Wextra -std=c99 -pedantic
 
-all:main.o lexer.o
-	$(CC) $(FLAGS) -o a.out lexer.o main.o
+all:main.o lexer.o parser.o
+	$(CC) $(FLAGS) -o a.out lexer.o parser.o main.o
 
 main.o:./src/main.c
 	$(CC) $(FLAGS) -c ./src/main.c 

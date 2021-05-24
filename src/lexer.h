@@ -1,5 +1,6 @@
 #ifndef LEXER_H
 #define LEXER_H
+
 #include "tokens.h"
 #include <stdlib.h>
 
@@ -7,7 +8,8 @@ void lex_line(char*, size_t);
 int  lex_integer(char*, Token*);
 int  lex_entity(char* str, Token* s_token);
 void dump_tokens();
-
+int  get_next_token(Token **t);
+	
 // Lexer definitions
 #define KEYWORD_INT        "int"
 #define KEYWORD_FLOAT      "float"
@@ -20,6 +22,5 @@ void dump_tokens();
 #define WHITESPACE_TAB     '\t'
 #define WHITESPACE_SPACE   ' '
 #define WHITESPACE_NEWLINE '\n'
-
 
 #endif // LEXER_H

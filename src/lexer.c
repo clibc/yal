@@ -158,3 +158,13 @@ void dump_tokens(){
 		printf("------------\n");
 	}
 }
+
+int get_next_token(Token **token){
+	static int c = 0;
+	if(c < tokenCounter){
+		*token = &tokens[c];
+		c += 1;
+		return 1;
+	}
+	return 0;
+}

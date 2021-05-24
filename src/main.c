@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include "lexer.h"
+#include "parser.h"
 
 int main(void) {
 	/// 86 + 78 - 36
@@ -12,5 +13,7 @@ int main(void) {
 	lex_line(str, line_size);
 
 	dump_tokens();
+
+	parse_tokens();
 	return EXIT_SUCCESS;
 }
