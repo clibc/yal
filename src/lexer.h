@@ -9,14 +9,15 @@ int  lex_integer(char*, Token*);
 int  lex_entity(char* str, Token* s_token);
 void dump_tokens();
 int  get_next_token(Token **t);
-	
+int  show_next_token(Token **token);
+
 // Lexer definitions
 #define KEYWORD_INT        "int"
 #define KEYWORD_FLOAT      "float"
 #define OPERATOR_PLUS      '+'
 #define OPERATOR_MINUS     '-'
 #define OPERATOR_MULTIPLY  '*'
-#define OPERATOR_DEVIDE    '/'
+#define OPERATOR_DIVIDE    '/'
 #define OPERATOR_EQUAL     '='
 
 #define WHITESPACE_TAB     '\t'

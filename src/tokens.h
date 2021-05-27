@@ -19,6 +19,9 @@ typedef struct{
 		char  char_value;
 		char  entity[20]; 
 	}data;
+
+	// precedence for operators
+	int op_pre;
 } Token;
 
 #endif // TOKENS_H

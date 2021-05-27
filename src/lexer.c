@@ -43,21 +43,25 @@ void lex_line(char* str, size_t size){
 				case OPERATOR_PLUS:
 					tokens[tokenCounter].type = OPERATOR;
 					tokens[tokenCounter].data.char_value = OPERATOR_PLUS;
+					tokens[tokenCounter].op_pre = 1;
 					tokenCounter += 1;
 					break;
 				case OPERATOR_MINUS:
 					tokens[tokenCounter].type = OPERATOR;
 					tokens[tokenCounter].data.char_value = OPERATOR_MINUS;	
+					tokens[tokenCounter].op_pre = 1;
 					tokenCounter += 1;
 				break;
 				case OPERATOR_MULTIPLY:
 					tokens[tokenCounter].type = OPERATOR;
 					tokens[tokenCounter].data.char_value = OPERATOR_MULTIPLY;
+					tokens[tokenCounter].op_pre = 2;
 					tokenCounter += 1;
 					break;
-				case OPERATOR_DEVIDE:
+				case OPERATOR_DIVIDE:
 					tokens[tokenCounter].type = OPERATOR;
-					tokens[tokenCounter].data.char_value = OPERATOR_DEVIDE;
+					tokens[tokenCounter].data.char_value = OPERATOR_DIVIDE;
+					tokens[tokenCounter].op_pre = 2;
 					tokenCounter += 1;
 					break;
 				case OPERATOR_EQUAL:
@@ -159,11 +163,19 @@ void dump_tokens(){
 	}
 }
 
+static int t_count = 0;
 int get_next_token(Token **token){
-	static int c = 0;
-	if(c < tokenCounter){
-		*token = &tokens[c];
-		c += 1;
+	if(t_count < tokenCounter){
+		*token = &tokens[t_count];
+		t_count += 1;
+		return 1;
+	}
+	return 0;
+}
+
+int show_next_token(Token **token){
+	if(t_count < tokenCounter){
+		*token = &tokens[t_count];
 		return 1;
 	}
 	return 0;
