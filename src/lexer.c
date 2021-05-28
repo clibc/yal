@@ -69,10 +69,21 @@ void lex_line(char* str, size_t size){
 					tokens[tokenCounter].data.char_value = OPERATOR_EQUAL;
 					tokenCounter += 1;
 					break;
-
-				case ' ':
-				case '\n':
-				case '\t':
+				case LEFT_PAR:
+					tokens[tokenCounter].type = SEPERATOR;
+					tokens[tokenCounter].data.char_value = LEFT_PAR;
+					tokenCounter += 1;
+					break;
+			    case RIGHT_PAR:
+					tokens[tokenCounter].type = SEPERATOR;
+					tokens[tokenCounter].data.char_value = RIGHT_PAR;
+					tokenCounter += 1;
+					break;
+					
+				case  WHITESPACE_TAB:
+				case  WHITESPACE_SPACE:
+				case  WHITESPACE_NEWLINE:
+				case  0:
 					break;
 				default:
 					printf("Undefined Identifier %c\nASCII index : %d\n", str[i], (int)str[i]);
@@ -155,6 +166,10 @@ void dump_tokens(){
 		case KEYWORD:
 			printf("KEYWORD\n");
 			printf("Value : %s\n", token->data.entity);
+			break;
+		case SEPERATOR:
+			printf("SEPERATOR\n");
+			printf("Value : %c\n", token->data.char_value);
 			break;
 		default:
 			break;

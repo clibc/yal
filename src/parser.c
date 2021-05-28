@@ -18,8 +18,9 @@ void parse_tokens(void){
 			printf("Unexpected operator : %c\n", t->data.char_value);
 			exit(EXIT_FAILURE);
 		case LITERAL:
-			 exp_result = parse_expression();
-			 printf("result = %d\n", exp_result.data.int_value);
+		case SEPERATOR:
+			exp_result = parse_expression();
+		    printf("result = %d\n", exp_result.data.int_value);
 		default:
 			break;
 		}
@@ -71,7 +72,7 @@ static void lookahead_literal_int(Token *t){
 	}
 }
 
-static Token parse_expression(){
+static Token parse_expression(void){
 	// assuming starting token is literal number
 
 	int output_count = 0;
@@ -85,10 +86,12 @@ static Token parse_expression(){
 		if(get_next_token(&n_token)){
 			if(n_token->type == OPERATOR){	
 				while(op_count > 0 &&
-					  op_stack[op_count-1].op_pre > n_token->op_pre &&
-					  op_stack[op_count-1].op_pre == n_token->op_pre){
+					  (op_stack[op_count-1].op_pre > n_token->op_pre ||
+					  op_stack[op_count-1].op_pre == n_token->op_pre) &&
+					  op_stack[op_count-1].data.char_value != LEFT_PAR){
+					// Possible bug on the last comparison (uninitilized memory address could have the same value as LEFT_PAR (40)
 
-					output[output_count] = op_stack[op_count];
+					output[output_count] = op_stack[op_count-1];
 					op_count     -= 1;
 					output_count += 1;
 				}
@@ -100,6 +103,21 @@ static Token parse_expression(){
 				// And need to check if this is number, for now we assume  literal input is always a number
 				output[output_count] = *n_token;
 				output_count += 1;
+			}
+			else if(n_token->type == SEPERATOR){
+				if(n_token->data.char_value == LEFT_PAR){
+					op_stack[op_count] = *n_token; 
+					op_count += 1;			
+				}
+				else if(n_token->data.char_value == RIGHT_PAR){
+					while(op_stack[op_count - 1].data.char_value != LEFT_PAR){
+						output[output_count] = op_stack[op_count-1];
+						op_count     -= 1;
+						output_count += 1;
+					}
+					if(op_stack[op_count - 1].data.char_value == LEFT_PAR)
+						op_count -= 1;					
+				}
 			}
 			else{
 				printf("Unexpected token. %s (Expected : 'OPERATOR' OR 'LITERAL')\n", n_token->data.entity);
@@ -121,7 +139,6 @@ static Token parse_expression(){
 	
 	Token p_stack[20];
 	int   p_counter = 0;
-		
 		
 	int iterator = 0;
 	while(output_count > 0){

@@ -20,6 +20,9 @@ int  show_next_token(Token **token);
 #define OPERATOR_DIVIDE    '/'
 #define OPERATOR_EQUAL     '='
 
+#define LEFT_PAR           '('
+#define RIGHT_PAR          ')'
+
 #define WHITESPACE_TAB     '\t'
 #define WHITESPACE_SPACE   ' '
 #define WHITESPACE_NEWLINE '\n'
