@@ -51,7 +51,7 @@ void lex_line(char* str, size_t size){
 					tokens[tokenCounter].data.char_value = OPERATOR_MINUS;	
 					tokens[tokenCounter].op_pre = 1;
 					tokenCounter += 1;
-				break;
+					break;
 				case OPERATOR_MULTIPLY:
 					tokens[tokenCounter].type = OPERATOR;
 					tokens[tokenCounter].data.char_value = OPERATOR_MULTIPLY;
