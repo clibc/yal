@@ -1,19 +1,28 @@
 #include "parser.h"
 #include "lexer.h"
+#include "variable.h"
 #include <stdio.h>
 #include <stdlib.h>
 
-static void lookahead_literal_int(Token *t);
-static Token parse_expression();
+static Token parse_expression(void);
+static void  parse_variable_decl(void);
 
 void parse_tokens(void){
 	Token *t;
 	Token exp_result;
+	Variable *var;
 	if(show_next_token(&t)){ // this is the first token we get, so there are few possibilities
 		switch (t->type){
 		case IDENTIFIER:
-			printf("Undefined Identifier : %s\n", t->data.entity );
-			exit(EXIT_FAILURE);
+			var = get_variable(t->data.entity);
+			if(var != NULL){
+				printf("%s = %d\n", var->name, var->value);
+			}
+			else{
+				printf("ERROR: Undefined identifier %s\n", t->data.entity);
+				exit(EXIT_FAILURE);
+			}
+			break;
 		case OPERATOR:
 			printf("Unexpected operator : %c\n", t->data.char_value);
 			exit(EXIT_FAILURE);
@@ -21,54 +30,13 @@ void parse_tokens(void){
 		case SEPERATOR:
 			exp_result = parse_expression();
 		    printf("result = %d\n", exp_result.data.int_value);
+			break;
+	    case KEYWORD: // Assuming it is a type keyword
+			parse_variable_decl();
+			break;
 		default:
 			break;
 		}
-	}
-}
-
-static void lookahead_literal_int(Token *t){
-	// if this happens there is a token and we need to parse others
-	Token *op_token;
-	if(get_next_token(&op_token)){
-		if(op_token->type == OPERATOR){
-			Token *other_operand;
-			if(get_next_token(&other_operand)){
-				// we got other operand and it is time to do actual operation
-				// and we dont care about operator precedence yet
-				if(other_operand->type == LITERAL){
-					int result = 0;
-					switch(op_token->data.char_value){
-					case OPERATOR_PLUS:
-						result = t->data.int_value + other_operand->data.int_value;
-						break;
-					case OPERATOR_MINUS:
-						result = t->data.int_value - other_operand->data.int_value;
-						break;
-					case OPERATOR_MULTIPLY:
-						result = t->data.int_value * other_operand->data.int_value;
-						break;
-					case OPERATOR_DIVIDE:
-						result = t->data.int_value / other_operand->data.int_value;
-						break;
-					default:
-						break;
-					}
-					printf("Result : %d\n", result);
-				}
-				else{
-					// second operator is not as expected
-					printf("ERROR: Trying to operate two different thing.\n");
-				}
-			}
-			else{
-				//there is no token after operator
-				printf("ERROR: No operand after operator %c\n", op_token->data.char_value);
-			}
-		}
-	}
-	else{
-		printf("%d\n", t->data.int_value);
 	}
 }
 
@@ -83,7 +51,7 @@ static Token parse_expression(void){
 	
 	Token *n_token;
 	while(1){
-		if(get_next_token(&n_token)){
+		if(get_next_token(&n_token)){ // here running out of tokens
 			if(n_token->type == OPERATOR){	
 				while(op_count > 0 &&
 					  (op_stack[op_count-1].op_pre > n_token->op_pre ||
@@ -174,4 +142,41 @@ static Token parse_expression(void){
 	}
 	
 	return result;
+}
+
+static void parse_variable_decl(void){
+	// <TYPE_KEYWORD> <IDENDTIFIER> <EQUAL_OPERATOR>
+	// then call parse_expression and store return value in memory
+	Token *n_token;
+
+	if(get_next_token(&n_token)){
+		// Check if token is keyword
+		if(n_token->type == KEYWORD){
+			// TODO : Make 'subtype' like TYPE_KEYWORD etc...
+			// This section assumes type can only be int
+			Token *identifier_token;
+			get_next_token(&identifier_token);
+
+			Token *equal_token;
+			get_next_token(&equal_token);
+			if(equal_token->type            == OPERATOR &&
+			   equal_token->data.char_value == OPERATOR_EQUAL){
+				Token result = parse_expression();
+				create_variable(identifier_token->data.entity, result.data.int_value);
+			}
+			else{
+				printf("ERROR: Expected OPERATOR_EQUAL, but got %s\n", equal_token->data.entity);
+				exit(EXIT_FAILURE);
+			}
+		}
+		else{
+			printf("ERROR: Expected KEYWORD\n");
+			exit(EXIT_FAILURE);
+		}
+	}
+	else{
+		printf("Uncompleted assignment \n");
+		exit(EXIT_FAILURE);
+	}
+	
 }

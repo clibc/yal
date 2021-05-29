@@ -27,5 +27,12 @@ int main(void) {
 	dump_tokens();
 
 	parse_tokens();
+
+	// for testing variable
+	getline(&line, &line_size, stdin);
+	lex_line(line, line_size);
+
+	parse_tokens();
+
 	return EXIT_SUCCESS;
 }
