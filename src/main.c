@@ -13,7 +13,7 @@
 #define GET_LINE												\
 	char *line = NULL;											\
 	size_t line_size;											\
-	getline(&line, &line_size, stdin);							
+	getline(&line, &line_size, stdin)							
 #endif
 
 
