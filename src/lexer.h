@@ -10,6 +10,7 @@ int  lex_entity(char* str, Token* s_token);
 void dump_tokens();
 int  get_next_token(Token **t);
 int  show_next_token(Token **token);
+void reset_lexer();
 
 // Lexer definitions
 #define KEYWORD_INT        "int"

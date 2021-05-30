@@ -104,6 +104,15 @@ static Token parse_expression(void){
 	// calculate post-fix notation
 	Token result;
 	result.type = LITERAL;
+
+	// What if there is only literal in output stack 
+	// e.g int a = 5
+	// then we need to return value of that token immediately.
+	if(output_count == 1){ 
+		result.data.int_value = output[output_count - 1].data.int_value;
+		return result;
+	}
+
 	
 	Token p_stack[20];
 	int   p_counter = 0;

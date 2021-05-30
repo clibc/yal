@@ -8,7 +8,7 @@
 #define GET_LINE												\
 	char line[100];												\
 	size_t line_size = sizeof(line);							\
-	fgets(line, 100, stdin)									
+	fgets(line, line_size, stdin)									
 #elif __unix__
 #define GET_LINE												\
 	char *line = NULL;											\
@@ -18,21 +18,20 @@
 
 
 int main(void) {
-	/// 86 + 78 - 36
-
 	GET_LINE;
-	
 	lex_line(line, line_size);
-
 	dump_tokens();
-
 	parse_tokens();
+	reset_lexer();
+	
+	while(1){
+		// for testing variable
+		getline(&line, &line_size, stdin);
+		lex_line(line, line_size);
+		parse_tokens();
+		reset_lexer();
+	}
 
-	// for testing variable
-	getline(&line, &line_size, stdin);
-	lex_line(line, line_size);
-
-	parse_tokens();
 
 	return EXIT_SUCCESS;
 }

@@ -5,6 +5,12 @@
 
 static Token tokens[100];
 static int tokenCounter = 0; // count of tokens
+static int t_count = 0;
+
+void reset_lexer(){
+	tokenCounter = 0;
+	t_count = 0;
+}
 
 static int check_whitespace(char c){
 	switch(c){
@@ -178,7 +184,6 @@ void dump_tokens(){
 	}
 }
 
-static int t_count = 0;
 int get_next_token(Token **token){
 	if(t_count < tokenCounter){
 		*token = &tokens[t_count];
