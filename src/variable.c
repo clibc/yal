@@ -17,14 +17,39 @@ Variable* get_variable(char* name){
 	return NULL;
 }
 
-void create_variable(char* name, int value){
-	Variable *var = get_variable(name);
+/* void create_variable(char* name, int value, int type){ */
+/* 	Variable *var = get_variable(name); */
+/* 	if(var != NULL){ */
+/* 		printf("ERROR: variable '%s' does already exist\n", name); */
+/* 		exit(EXIT_FAILURE); */
+/* 	} */
+
+/* 	if(type == INTEGER){ */
+/* 		vars[var_count].data.int_value = value; */
+		
+/* 	} */
+	
+/* 	strcpy(vars[var_count].name, name);  */
+/* 	var_count += 1; */
+/* } */
+
+
+void create_variable(Token *identifier, Token* exp){
+	Variable *var = get_variable(identifier->sub.literal.data.string);
 	if(var != NULL){
-		printf("ERROR: variable '%s' does already exist\n", name);
+		printf("ERROR: variable '%s' does already exist\n", identifier->sub.identifier.string);
 		exit(EXIT_FAILURE);
 	}
 
-	strcpy(vars[var_count].name, name); 
-	vars[var_count].value = value;
+	if(exp->sub.literal.type == INTEGER){
+		vars[var_count].type = INTEGER;
+		vars[var_count].data.int_value = exp->sub.literal.data.int_value; 
+	}
+	else if(exp->sub.literal.type == FLOAT){
+		vars[var_count].type = FLOAT;
+		vars[var_count].data.float_value = exp->sub.literal.data.float_value;
+	}
+	
+	strcpy(vars[var_count].name, identifier->sub.identifier.string); 
 	var_count += 1;
 }

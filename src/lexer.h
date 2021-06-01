@@ -15,6 +15,7 @@ void reset_lexer();
 // Lexer definitions
 #define KEYWORD_INT        "int"
 #define KEYWORD_FLOAT      "float"
+#define KEYWORD_STRING     "string"
 #define OPERATOR_PLUS      '+'
 #define OPERATOR_MINUS     '-'
 #define OPERATOR_MULTIPLY  '*'

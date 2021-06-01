@@ -30,6 +30,9 @@ static int check_keyword(char* word){
 	else if(strcmp(word, KEYWORD_FLOAT) == 0){
 		return 1;
 	}
+	else if(strcmp(word, KEYWORD_STRING) == 0){
+		return 1;
+	}
 	return 0;
 }
 
@@ -47,42 +50,42 @@ void lex_line(char* str, size_t size){
 			{
 				switch(str[i]){
 				case OPERATOR_PLUS:
-					tokens[tokenCounter].type = OPERATOR;
-					tokens[tokenCounter].data.char_value = OPERATOR_PLUS;
-					tokens[tokenCounter].op_pre = 1;
+					tokens[tokenCounter].type                    = OPERATOR;
+					tokens[tokenCounter].sub.operator.symbol     = OPERATOR_PLUS;
+					tokens[tokenCounter].sub.operator.precedence = 1;
 					tokenCounter += 1;
 					break;
 				case OPERATOR_MINUS:
-					tokens[tokenCounter].type = OPERATOR;
-					tokens[tokenCounter].data.char_value = OPERATOR_MINUS;	
-					tokens[tokenCounter].op_pre = 1;
+					tokens[tokenCounter].type                    = OPERATOR;
+					tokens[tokenCounter].sub.operator.symbol     = OPERATOR_MINUS;
+					tokens[tokenCounter].sub.operator.precedence = 1;
 					tokenCounter += 1;
 					break;
 				case OPERATOR_MULTIPLY:
-					tokens[tokenCounter].type = OPERATOR;
-					tokens[tokenCounter].data.char_value = OPERATOR_MULTIPLY;
-					tokens[tokenCounter].op_pre = 2;
+					tokens[tokenCounter].type                    = OPERATOR;
+					tokens[tokenCounter].sub.operator.symbol     = OPERATOR_MULTIPLY;
+					tokens[tokenCounter].sub.operator.precedence = 2;
 					tokenCounter += 1;
 					break;
 				case OPERATOR_DIVIDE:
-					tokens[tokenCounter].type = OPERATOR;
-					tokens[tokenCounter].data.char_value = OPERATOR_DIVIDE;
-					tokens[tokenCounter].op_pre = 2;
+					tokens[tokenCounter].type                    = OPERATOR;
+					tokens[tokenCounter].sub.operator.symbol     = OPERATOR_DIVIDE;
+					tokens[tokenCounter].sub.operator.precedence = 2;
 					tokenCounter += 1;
 					break;
 				case OPERATOR_EQUAL:
-					tokens[tokenCounter].type = OPERATOR;
-					tokens[tokenCounter].data.char_value = OPERATOR_EQUAL;
+					tokens[tokenCounter].type                     = OPERATOR;
+					tokens[tokenCounter].sub.operator.symbol      = OPERATOR_EQUAL;
 					tokenCounter += 1;
 					break;
 				case LEFT_PAR:
-					tokens[tokenCounter].type = SEPERATOR;
-					tokens[tokenCounter].data.char_value = LEFT_PAR;
+					tokens[tokenCounter].type                    = SEPERATOR;
+					tokens[tokenCounter].sub.operator.symbol     = LEFT_PAR;
 					tokenCounter += 1;
 					break;
 			    case RIGHT_PAR:
-					tokens[tokenCounter].type = SEPERATOR;
-					tokens[tokenCounter].data.char_value = RIGHT_PAR;
+					tokens[tokenCounter].type                    = SEPERATOR;
+					tokens[tokenCounter].sub.operator.symbol     = RIGHT_PAR;
 					tokenCounter += 1;
 					break;
 					
@@ -105,7 +108,6 @@ void lex_line(char* str, size_t size){
 
 int lex_integer(char* str, Token* int_token){
 	char *base_ptr = str;
-	int_token->type = LITERAL;
 
 	char storage[10];
 	int shifted_char = 0;
@@ -113,14 +115,37 @@ int lex_integer(char* str, Token* int_token){
 	while(1){
 		if(isdigit(*base_ptr)){
 			storage[shifted_char] = *base_ptr;
-			base_ptr++;
+			base_ptr     += 1;
 			shifted_char += 1;
+		}
+		else if(*base_ptr == '.'){
+			// parsing floating point
+			storage[shifted_char] = *base_ptr;
+			shifted_char          += 1;
+			base_ptr              += 1;
+
+			while(1){
+				if(isdigit(*base_ptr)){
+					storage[shifted_char] = *base_ptr;
+					base_ptr              += 1;
+					shifted_char          += 1;
+				}
+				else{ // end parsing float construct token and return
+					int_token->type                         = LITERAL;
+					int_token->sub.literal.type             = FLOAT;
+					int_token->sub.literal.data.float_value = atof(&storage[0]);
+					return shifted_char;
+				}
+			}
 		}
 		else break;
 	}
 
 	storage[shifted_char] = '\0';
-	int_token->data.int_value = atoi(&storage[0]);
+	
+	int_token->type                       = LITERAL;
+	int_token->sub.literal.type           = INTEGER;
+	int_token->sub.literal.data.int_value = atoi(&storage[0]);
 	return shifted_char-1;
 }
 
@@ -143,12 +168,24 @@ int lex_entity(char* str, Token* s_token){
 	storage[shifted_char] = '\0';
 	if(check_keyword(storage)){
 		s_token->type = KEYWORD;
+		strcpy(s_token->sub.keyword.string, storage);
+
+		if(strcmp(storage, KEYWORD_INT) == 0){
+			s_token->sub.keyword.sub.type = INTEGER;
+		}
+		else if(strcmp(storage, KEYWORD_FLOAT) == 0){
+			s_token->sub.keyword.sub.type = FLOAT;
+		}
+		else if(strcmp(storage, KEYWORD_STRING) == 0){
+			s_token->sub.keyword.sub.type = STRING;
+		}
+
 	}
 	else{
 		s_token->type = IDENTIFIER;
+		strcpy(s_token->sub.identifier.string, storage);
 	}
 
-	strcpy(s_token->data.entity, storage);
 	return shifted_char - 1;
 }
 
@@ -158,25 +195,37 @@ void dump_tokens(){
 		printf("Token type : ");
 		switch(token->type){
 		case LITERAL:
-			printf("LITERAL\n");
-			printf("Int value : %d\n", token->data.int_value);
+			switch(token->sub.literal.type){
+			case INTEGER:
+				printf("LITERAL INTEGER\n");
+				printf("Value : %d\n", token->sub.literal.data.int_value);
+				break;
+			case FLOAT:
+				printf("LITERAL FLOAT\n");
+				printf("Value : %f\n", token->sub.literal.data.float_value);
+				break;
+			case STRING:
+				printf("LITERAL STRING\n");
+				printf("Value : %s\n", token->sub.literal.data.string);
+				break;
+			}
 			break;
 		case OPERATOR:
 			printf("OPERATOR\n");
-			printf("Value : %c\n", token->data.char_value);
+			printf("Value : %c\n", token->sub.operator.symbol);
+			printf("Precedence : %d\n", token->sub.operator.precedence);
 			break;
 		case IDENTIFIER:
 			printf("IDENTIFIER\n");
-			printf("Value : %s\n", token->data.entity);
+			printf("Value : %s\n", token->sub.identifier.string);
 			break;
 		case KEYWORD:
 			printf("KEYWORD\n");
-			printf("Value : %s\n", token->data.entity);
+			printf("Value : %s\n", token->sub.keyword.string);
 			break;
 		case SEPERATOR:
 			printf("SEPERATOR\n");
-			printf("Value : %c\n", token->data.char_value);
-			break;
+			printf("Symbol : %c\n", token->sub.operator.symbol);
 		default:
 			break;
 		}

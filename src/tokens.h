@@ -16,6 +16,11 @@ typedef enum{
 	STRING
 } Literal_SB;
 
+typedef enum{
+	T_FLOAT,
+	T_INTEGER,
+} Keyword_SB;
+
 typedef struct{
 	Literal_SB type;
 
@@ -24,31 +29,33 @@ typedef struct{
 		float float_value;
 		char  string[15];
 	}data;
-
 } Literal_Token;
 
 typedef struct{
-	char op;
+	char symbol;
 	int  precedence;
-} Operator_SB;
+} Operator_Token;
+
+typedef struct{
+	char string[15];
+	union {
+		Literal_SB type;
+	}sub;
+} Keyword_Token;
+
+typedef struct{
+	char string[15];
+} Identifier_Token;
 
 typedef struct{
 	TokenType type;
-	
-	union{
-		int   int_value;
-		float float_value;
-		char  char_value;
-		char  entity[20]; 
-	}data;
 
 	union{
-		Literal_SB  literal;
-		Operator_SB operator;
+		Literal_Token    literal;
+		Operator_Token   operator;
+		Keyword_Token    keyword;
+		Identifier_Token identifier;
 	}sub;
-	
-	// precedence for operators
-	int op_pre;
 } Token;
 
 #endif // TOKENS_H
