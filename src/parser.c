@@ -32,7 +32,12 @@ void parse_tokens(void){
 		case LITERAL:
 		case SEPERATOR:
 			exp_result = parse_expression();
-		    printf("result = %d\n", exp_result.sub.literal.data.int_value);
+			if(exp_result.type == LITERAL){
+				if(exp_result.sub.literal.type == INTEGER)
+					printf("result = %d\n", exp_result.sub.literal.data.int_value);
+				else if(exp_result.sub.literal.type == FLOAT)
+					printf("result = %f\n", exp_result.sub.literal.data.float_value);
+			}
 			break;
 	    case KEYWORD: // Assuming it is a type keyword
 			parse_variable_decl();
@@ -70,9 +75,7 @@ static Token parse_expression(void){
 				op_count += 1;
 			}
 			else if(n_token->type == LITERAL &&
-					(n_token->sub.literal.type == INTEGER || n_token->sub.literal.type)){
-				// we need sub_token type for literals line numbers, string etc..
-				// And need to check if this is number, for now we assume  literal input is always a number
+					(n_token->sub.literal.type == INTEGER || n_token->sub.literal.type == FLOAT)){
 				output[output_count] = *n_token;
 				output_count += 1;
 			}

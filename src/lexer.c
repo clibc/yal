@@ -120,13 +120,13 @@ int lex_integer(char* str, Token* int_token){
 		}
 		else if(*base_ptr == '.'){
 			// parsing floating point
-			storage[shifted_char] = *base_ptr;
+			storage[shifted_char]  = *base_ptr;
 			shifted_char          += 1;
 			base_ptr              += 1;
 
 			while(1){
 				if(isdigit(*base_ptr)){
-					storage[shifted_char] = *base_ptr;
+					storage[shifted_char]  = *base_ptr;
 					base_ptr              += 1;
 					shifted_char          += 1;
 				}
@@ -134,7 +134,7 @@ int lex_integer(char* str, Token* int_token){
 					int_token->type                         = LITERAL;
 					int_token->sub.literal.type             = FLOAT;
 					int_token->sub.literal.data.float_value = atof(&storage[0]);
-					return shifted_char;
+					return shifted_char - 1;
 				}
 			}
 		}
@@ -146,7 +146,7 @@ int lex_integer(char* str, Token* int_token){
 	int_token->type                       = LITERAL;
 	int_token->sub.literal.type           = INTEGER;
 	int_token->sub.literal.data.int_value = atoi(&storage[0]);
-	return shifted_char-1;
+	return shifted_char - 1;
 }
 
 int lex_entity(char* str, Token* s_token){
