@@ -79,6 +79,37 @@ static Token parse_expression(void){
 				output[output_count] = *n_token;
 				output_count += 1;
 			}
+			else if(n_token->type == IDENTIFIER){
+				Variable *var = get_variable(n_token->sub.identifier.string);
+				if(var != NULL){	
+					if(var->type == INTEGER){
+						// create new literal token
+						Token t;
+						t.type = LITERAL;
+						t.sub.literal.type = INTEGER;
+						t.sub.literal.data.int_value = var->data.int_value;
+						output[output_count] = t;
+						output_count += 1;
+					}
+					else if(var->type == FLOAT){
+						Token t;
+						t.type = LITERAL;
+						t.sub.literal.type = FLOAT;
+						t.sub.literal.data.int_value = var->data.float_value;
+						output[output_count] = t;
+						output_count += 1;
+					}
+					else {
+						printf("ERROR: Identifier '%s' expected to be INTEGER or FLOAT\n", var->name);
+						exit(EXIT_FAILURE);
+					}
+				}
+				else {
+					printf("ERROR: Undefined identifier '%s'\n", var->name);
+					exit(EXIT_FAILURE);
+				}
+				
+			}
 			else if(n_token->type == SEPERATOR){
 				if(n_token->sub.operator.symbol == LEFT_PAR){
 					op_stack[op_count] = *n_token; 
