@@ -173,7 +173,7 @@ static Token parse_expression(void){
 			Token t1 = p_stack[p_counter-2]; // first operand
 			p_counter -= 2;
 
-			switch(output[iterator].sub.operator.symbol){
+			switch(output[iterator].sub.operator.symbol){ // Clean this up (Wrapping switch body to function makes sense)
 			case OPERATOR_PLUS:
 				if(t1.sub.literal.type == INTEGER && t2.sub.literal.type == INTEGER){
 					result.sub.literal.data.int_value = t1.sub.literal.data.int_value + t2.sub.literal.data.int_value;
@@ -191,7 +191,6 @@ static Token parse_expression(void){
 					result.sub.literal.data.float_value = t1.sub.literal.data.float_value + t2.sub.literal.data.float_value;
 					result.sub.literal.type = FLOAT;
 				}
-					
 				break;
 			case OPERATOR_MINUS:
 				if(t1.sub.literal.type == INTEGER && t2.sub.literal.type == INTEGER){

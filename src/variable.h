@@ -1,4 +1,3 @@
-// we only support int type vars for now
 #include "tokens.h"
 
 #define MAXNAME_SIZE 10
