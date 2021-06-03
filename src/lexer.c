@@ -112,7 +112,7 @@ int lex_integer(char* str, Token* int_token){
 	char storage[10];
 	int shifted_char = 0;
 
-	while(1){
+	for(;;){
 		if(isdigit(*base_ptr)){
 			storage[shifted_char] = *base_ptr;
 			base_ptr     += 1;
@@ -124,7 +124,7 @@ int lex_integer(char* str, Token* int_token){
 			shifted_char          += 1;
 			base_ptr              += 1;
 
-			while(1){
+			for(;;){
 				if(isdigit(*base_ptr)){
 					storage[shifted_char]  = *base_ptr;
 					base_ptr              += 1;
@@ -155,7 +155,7 @@ int lex_entity(char* str, Token* s_token){
 	char storage[20];
 	int shifted_char = 0;
 
-	while(1){
+	for(;;){
 		if(isalpha(*base_ptr) || isdigit(*base_ptr)){
 			storage[shifted_char] = *base_ptr;
 			base_ptr += 1;

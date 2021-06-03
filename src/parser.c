@@ -58,7 +58,7 @@ static Token parse_expression(void){
 	Token op_stack[20];
 	
 	Token *n_token;
-	while(1){
+	for(;;){
 		if(get_next_token(&n_token)){ // here running out of tokens
 			if(n_token->type == OPERATOR){	
 				while(op_count > 0 &&
@@ -95,7 +95,7 @@ static Token parse_expression(void){
 						Token t;
 						t.type = LITERAL;
 						t.sub.literal.type = FLOAT;
-						t.sub.literal.data.int_value = var->data.float_value;
+						t.sub.literal.data.float_value = var->data.float_value;
 						output[output_count] = t;
 						output_count += 1;
 					}
