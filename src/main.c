@@ -46,8 +46,11 @@ int main(int argc, char** argv) {
 
 			fbuffer = (char*)malloc(fsize * sizeof(char));
 			fread(fbuffer, sizeof(char), fsize, f);
-				  
-			printf("%s", fbuffer);
+
+			strtok(fbuffer, "\n");
+			strtok(NULL, "\n");
+			strtok(NULL, "\n");
+			printf("%s\n", strtok(NULL, "\n"));
 		}
 			
 	}
