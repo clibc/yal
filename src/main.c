@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <errno.h>
+#include <string.h>
+
 #include "lexer.h"
 #include "parser.h"
 
@@ -17,21 +20,37 @@
 #endif
 
 
-int main(void) {
-	GET_LINE;
-	lex_line(line, line_size);
-	dump_tokens();
-	parse_tokens();
-	reset_lexer();
-	
-	while(1){
-		// for testing variable
-		getline(&line, &line_size, stdin);
-		lex_line(line, line_size);
-		parse_tokens();
-		reset_lexer();
+int main(int argc, char** argv) {
+	if(argc == 1){
+		while(1){
+			// for testing variable
+			GET_LINE;
+			lex_line(line, line_size);
+			dump_tokens();
+			parse_tokens();
+			reset_lexer();
+		}
 	}
+	else {
+		FILE *f = fopen(argv[1], "r");
+		if(f == NULL){
+			char* error_message = strerror(errno);
+			printf("%s '%s'\n", error_message, argv[1]);
+		}
+		else{
+			char *fbuffer;
+			size_t fsize = 0;
+			fseek(f, 0, SEEK_END);
+			fsize = ftell(f);
+			fseek(f, 0, SEEK_SET);
 
+			fbuffer = (char*)malloc(fsize * sizeof(char));
+			fread(fbuffer, sizeof(char), fsize, f);
+				  
+			printf("%s", fbuffer);
+		}
+			
+	}
 
 	return EXIT_SUCCESS;
 }
