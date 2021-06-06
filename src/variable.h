@@ -1,3 +1,6 @@
+#ifndef VARIABLE_H
+#define VARIABLE_H
+
 #include "tokens.h"
 
 #define MAXNAME_SIZE 10
@@ -15,3 +18,5 @@ typedef struct{
 
 void       create_variable(Token *identifier, Token* exp);
 Variable*  get_variable(char* name);
+
+#endif // VARIABLE_H
