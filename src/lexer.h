@@ -17,6 +17,7 @@ void reset_lexer();
 #define KEYWORD_FLOAT      "float"
 #define KEYWORD_STRING     "string"
 #define KEYWORD_FUNCDEF    "fdef"
+
 #define OPERATOR_PLUS      '+'
 #define OPERATOR_MINUS     '-'
 #define OPERATOR_MULTIPLY  '*'

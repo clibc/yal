@@ -13,7 +13,8 @@ typedef enum{
 typedef enum{
 	INTEGER,
 	FLOAT,
-	STRING
+	STRING,
+	FUNCDEF
 } Literal_SB;
 
 typedef enum{
