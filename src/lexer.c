@@ -33,6 +33,9 @@ static int check_keyword(char* word){
 	else if(strcmp(word, KEYWORD_STRING) == 0){
 		return 1;
 	}
+	else if(strcmp(word, KEYWORD_FUNCDEF) == 0){
+		return 1;
+	}
 	return 0;
 }
 

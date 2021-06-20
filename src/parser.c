@@ -302,3 +302,11 @@ static void parse_variable_decl(void){
 	}
 	
 }
+
+static void parse_function_decl(){
+	// function def : fdef func_name(){}
+
+	Token def_token;
+	get_next_token(&def_token);
+	
+}
