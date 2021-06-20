@@ -1,8 +1,10 @@
 CC=cl
-FLAGS=/nologo /Zi /EHsc /W3 /std:c17
+FLAGS=/nologo /Zi /EHsc /W3 /std:c11
 
-all:main.obj parser.obj
-	$(CC) $(FLAGS) /Fea.exe parser.obj main.obj
+OFILES=main.obj lexer.obj parser.obj variable.obj
+
+all:$(OFILES)
+	$(CC) $(FLAGS) /Fea.exe $(OFILES)
 
 main.obj:./src/main.c
 	$(CC) $(FLAGS) /c /Fomain.obj ./src/main.c 
@@ -10,5 +12,12 @@ main.obj:./src/main.c
 parser.obj:./src/parser.c
 	$(CC) $(FLAGS) /c /Foparser.obj ./src/parser.c 
 
+lexer.obj:./src/lexer.c
+	$(CC) $(FLAGS) /c /Folexer.obj ./src/lexer.c
+
+variable.obj:./src/variable.c
+	$(CC) $(FLAGS) /c /Fovariable.obj ./src/variable.c
+
 clean:
 	del *.obj *.exe *.ilk *.pdb
+
