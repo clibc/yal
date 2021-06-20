@@ -14,12 +14,13 @@ typedef enum{
 	INTEGER,
 	FLOAT,
 	STRING,
-	FUNCDEF
 } Literal_SB;
 
 typedef enum{
-	T_FLOAT,
 	T_INTEGER,
+	T_FLOAT,
+	T_STRING,
+	T_FUNCDEF
 } Keyword_SB;
 
 typedef struct{

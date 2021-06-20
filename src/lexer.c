@@ -23,20 +23,20 @@ static int check_whitespace(char c){
 	}
 }
 
-static int check_keyword(char* word){
+static Keyword_SB check_keyword(char* word){
 	if(strcmp(word, KEYWORD_INT) == 0){
-		return 1;
+		return T_INTEGER; 
 	}
 	else if(strcmp(word, KEYWORD_FLOAT) == 0){
-		return 1;
+	    return T_FLOAT;
 	}
 	else if(strcmp(word, KEYWORD_STRING) == 0){
-		return 1;
+	    return T_STRING;
 	}
 	else if(strcmp(word, KEYWORD_FUNCDEF) == 0){
-		return 1;
+	    return T_FUNCDEF;
 	}
-	return 0;
+	return -1;
 }
 
 void lex_line(char* str, size_t size){
@@ -170,23 +170,13 @@ int lex_entity(char* str, Token* s_token){
 
 	storage[shifted_char] = '\0';
 	// TODO: After calling check_keyword we can return the type of the token. There is no need to strcmp() once again.
-	if(check_keyword(storage)){
+	
+	Keyword_SB keywordType = check_keyword(storage);
+	if(keywordType != -1){
 		s_token->type = KEYWORD;
 		strcpy(s_token->sub.keyword.string, storage);
 
-		if(strcmp(storage, KEYWORD_INT) == 0){
-			s_token->sub.keyword.sub.type = INTEGER;
-		}
-		else if(strcmp(storage, KEYWORD_FLOAT) == 0){
-			s_token->sub.keyword.sub.type = FLOAT;
-		}
-		else if(strcmp(storage, KEYWORD_STRING) == 0){
-			s_token->sub.keyword.sub.type = STRING;
-		}
-		else if(strcmp(storage, KEYWORD_FUNCDEF) == 0){
-			s_token->sub.keyword.sub.type = STRING;
-		}
-
+		s_token->sub.keyword.sub.type = keywordType;
 	}
 	else{
 		s_token->type = IDENTIFIER;
