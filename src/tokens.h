@@ -41,7 +41,7 @@ typedef struct{
 typedef struct{
 	char string[15];
 	union {
-		Literal_SB type;
+		Keyword_SB type;
 	}sub;
 } Keyword_Token;
 

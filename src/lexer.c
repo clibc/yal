@@ -169,10 +169,9 @@ int lex_entity(char* str, Token* s_token){
 	}
 
 	storage[shifted_char] = '\0';
-	// TODO: After calling check_keyword we can return the type of the token. There is no need to strcmp() once again.
 	
 	Keyword_SB keywordType = check_keyword(storage);
-	if(keywordType != -1){
+	if((int)keywordType != -1){
 		s_token->type = KEYWORD;
 		strcpy(s_token->sub.keyword.string, storage);
 
