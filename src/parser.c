@@ -266,8 +266,6 @@ static void parse_variable_decl(void){
 	if(get_next_token(&n_token)){
 		// Check if token is keyword
 		if(n_token->type == KEYWORD){
-			// TODO : Make 'subtype' like TYPE_KEYWORD etc...
-			// This section assumes type can only be int
 			Token *identifier_token;
 			get_next_token(&identifier_token);
 
@@ -308,5 +306,12 @@ static void parse_function_decl(){
 
 	Token def_token;
 	get_next_token(&def_token);
+
+	// Check function definition syntax 
+
+	
+	// Let's make a stack to store variables.
+	// So in this function we need to create new stack frame and push
+	// function params. 
 	
 }
