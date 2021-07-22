@@ -304,14 +304,17 @@ static void parse_variable_decl(void){
 static void parse_function_decl(){
 	// function def : fdef func_name(){}
 
+	// Token : fdef
 	Token def_token;
 	get_next_token(&def_token);
 
-	// Check function definition syntax 
+	if(def_token.type == KEYWORD &&
+	   def_token.sub.keyword.sub.type == T_FUNCDEF){
+		// This token is fdef
+		
+		Token function_name;
+		get_next_token(&function_name);
+		
+	}
 
-	
-	// Let's make a stack to store variables.
-	// So in this function we need to create new stack frame and push
-	// function params. 
-	
 }
