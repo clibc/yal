@@ -23,18 +23,18 @@ static int check_whitespace(char c){
 	}
 }
 
-static Keyword_SB check_keyword(char* word){
+static TokenSubType check_keyword(char* word){
 	if(strcmp(word, KEYWORD_INT) == 0){
-		return T_INTEGER; 
+		return KEY_INTEGER; 
 	}
 	else if(strcmp(word, KEYWORD_FLOAT) == 0){
-	    return T_FLOAT;
+	    return KEY_FLOAT;
 	}
 	else if(strcmp(word, KEYWORD_STRING) == 0){
-	    return T_STRING;
+	    return KEY_STRING;
 	}
 	else if(strcmp(word, KEYWORD_FUNCDEF) == 0){
-	    return T_FUNCDEF;
+	    return KEY_FUNCDEF;
 	}
 	return -1;
 }
@@ -135,7 +135,7 @@ int lex_integer(char* str, Token* int_token){
 				}
 				else{ // end parsing float construct token and return
 					int_token->type                         = LITERAL;
-					int_token->sub.literal.type             = FLOAT;
+					int_token->subType                      = LIT_FLOAT;
 					int_token->sub.literal.data.float_value = atof(&storage[0]);
 					return shifted_char - 1;
 				}
@@ -147,7 +147,7 @@ int lex_integer(char* str, Token* int_token){
 	storage[shifted_char] = '\0';
 	
 	int_token->type                       = LITERAL;
-	int_token->sub.literal.type           = INTEGER;
+	int_token->subType                    = LIT_INTEGER;
 	int_token->sub.literal.data.int_value = atoi(&storage[0]);
 	return shifted_char - 1;
 }
@@ -170,12 +170,12 @@ int lex_entity(char* str, Token* s_token){
 
 	storage[shifted_char] = '\0';
 	
-	Keyword_SB keywordType = check_keyword(storage);
+	TokenSubType keywordType = check_keyword(storage);
 	if((int)keywordType != -1){
 		s_token->type = KEYWORD;
 		strcpy(s_token->sub.keyword.string, storage);
 
-		s_token->sub.keyword.sub.type = keywordType;
+		s_token->subType = keywordType;
 	}
 	else{
 		s_token->type = IDENTIFIER;
@@ -189,18 +189,18 @@ void dump_tokens(){
 	for(int i = 0; i < tokenCounter; ++i){
 		Token *token = &tokens[i];
 		printf("Token type : ");
-		switch(token->type){
+		switch(token->subType){
 		case LITERAL:
-			switch(token->sub.literal.type){
-			case INTEGER:
+			switch(token->subType){
+			case LIT_INTEGER:
 				printf("LITERAL INTEGER\n");
 				printf("Value : %d\n", token->sub.literal.data.int_value);
 				break;
-			case FLOAT:
+			case LIT_FLOAT:
 				printf("LITERAL FLOAT\n");
 				printf("Value : %f\n", token->sub.literal.data.float_value);
 				break;
-			case STRING:
+			case LIT_STRING:
 				printf("LITERAL STRING\n");
 				printf("Value : %s\n", token->sub.literal.data.string);
 				break;

@@ -10,22 +10,32 @@ typedef enum{
 	COMMENT,
 } TokenType;
 
-typedef enum{
-	INTEGER,
-	FLOAT,
-	STRING,
-} Literal_SB;
+/* typedef enum{ */
+/* 	INTEGER, */
+/* 	FLOAT, */
+/* 	STRING, */
+/* } Literal_SB; */
 
-typedef enum{
-	T_INTEGER,
-	T_FLOAT,
-	T_STRING,
-	T_FUNCDEF
-} Keyword_SB;
+/* typedef enum{ */
+/* 	T_INTEGER, */
+/* 	T_FLOAT, */
+/* 	T_STRING, */
+/* 	T_FUNCDEF */
+/* } Keyword_SB; */
+
+typedef enum {
+	LIT_INTEGER,
+	LIT_FLOAT,
+	LIT_STRING,
+
+	KEY_INTEGER,
+	KEY_FLOAT,
+	KEY_STRING,
+	KEY_FUNCDEF
+} TokenSubType;
 
 typedef struct{
-	Literal_SB type;
-
+	//Literal_SB type;
 	union{
 		int   int_value;
 		float float_value;
@@ -40,9 +50,9 @@ typedef struct{
 
 typedef struct{
 	char string[15];
-	union {
-		Keyword_SB type;
-	}sub;
+	//union {
+	//	Keyword_SB type;
+	//}sub;
 } Keyword_Token;
 
 typedef struct{
@@ -51,6 +61,7 @@ typedef struct{
 
 typedef struct{
 	TokenType type;
+	TokenSubType subType;
 
 	union{
 		Literal_Token    literal;

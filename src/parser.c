@@ -16,9 +16,9 @@ void parse_tokens(void){
 		case IDENTIFIER:
 			var = get_variable(t->sub.identifier.string);
 			if(var != NULL){
-				if(var->type == INTEGER)
+				if(var->type == LIT_INTEGER)
 					printf("%s = %d\n", var->name, var->data.int_value);
-				else if(var->type == FLOAT)
+				else if(var->type == LIT_FLOAT)
 					printf("%s = %f\n", var->name, var->data.float_value);
 			}
 			else{
@@ -33,9 +33,9 @@ void parse_tokens(void){
 		case SEPERATOR:
 			exp_result = parse_expression();
 			if(exp_result.type == LITERAL){
-				if(exp_result.sub.literal.type == INTEGER)
+				if(exp_result.subType == LIT_INTEGER)
 					printf("result = %d\n", exp_result.sub.literal.data.int_value);
-				else if(exp_result.sub.literal.type == FLOAT)
+				else if(exp_result.subType == LIT_FLOAT)
 					printf("result = %f\n", exp_result.sub.literal.data.float_value);
 			}
 			break;
@@ -75,26 +75,26 @@ static Token parse_expression(void){
 				op_count += 1;
 			}
 			else if(n_token->type == LITERAL &&
-					(n_token->sub.literal.type == INTEGER || n_token->sub.literal.type == FLOAT)){
+					(n_token->subType == LIT_INTEGER || n_token->subType == LIT_FLOAT)){
 				output[output_count] = *n_token;
 				output_count += 1;
 			}
 			else if(n_token->type == IDENTIFIER){
 				Variable *var = get_variable(n_token->sub.identifier.string);
 				if(var != NULL){	
-					if(var->type == INTEGER){
+					if(var->type == LIT_INTEGER){
 						// create new literal token
 						Token t;
 						t.type = LITERAL;
-						t.sub.literal.type = INTEGER;
+						t.subType = LIT_INTEGER;
 						t.sub.literal.data.int_value = var->data.int_value;
 						output[output_count] = t;
 						output_count += 1;
 					}
-					else if(var->type == FLOAT){
+					else if(var->type == LIT_FLOAT){
 						Token t;
 						t.type = LITERAL;
-						t.sub.literal.type = FLOAT;
+						t.subType = LIT_FLOAT;
 						t.sub.literal.data.float_value = var->data.float_value;
 						output[output_count] = t;
 						output_count += 1;
@@ -147,12 +147,12 @@ static Token parse_expression(void){
 	// e.g int a = 5
 	// then we need to return value of that token immediately.
 	if(output_count == 1){ 
-		if(output[output_count - 1].sub.literal.type == INTEGER){
-			result.sub.literal.type           = INTEGER;
+		if(output[output_count - 1].subType == LIT_INTEGER){
+			result.subType                   = LIT_INTEGER;
 			result.sub.literal.data.int_value = output[output_count - 1].sub.literal.data.int_value;
 		}
-		else if(output[output_count - 1].sub.literal.type == FLOAT){
-			result.sub.literal.type             = FLOAT;
+		else if(output[output_count - 1].subType == LIT_FLOAT){
+			result.subType                      = LIT_FLOAT;
 			result.sub.literal.data.float_value = output[output_count - 1].sub.literal.data.float_value;
 		}
 		return result;
@@ -175,75 +175,75 @@ static Token parse_expression(void){
 
 			switch(output[iterator].sub.operator.symbol){ // Clean this up (Wrapping switch body to function makes sense)
 			case OPERATOR_PLUS:
-				if(t1.sub.literal.type == INTEGER && t2.sub.literal.type == INTEGER){
+				if(t1.subType == LIT_INTEGER && t2.subType == LIT_INTEGER){
 					result.sub.literal.data.int_value = t1.sub.literal.data.int_value + t2.sub.literal.data.int_value;
-					result.sub.literal.type = INTEGER;
+					result.subType = LIT_INTEGER;
 				}
-				else if(t1.sub.literal.type == FLOAT && t2.sub.literal.type == INTEGER){
+				else if(t1.subType == LIT_FLOAT && t2.subType == LIT_INTEGER){
 					result.sub.literal.data.float_value = t1.sub.literal.data.float_value + t2.sub.literal.data.int_value;
-					result.sub.literal.type = FLOAT;
+					result.subType = LIT_FLOAT;
 				}
-				else if(t1.sub.literal.type == INTEGER && t2.sub.literal.type == FLOAT){
+				else if(t1.subType == LIT_INTEGER && t2.subType == LIT_FLOAT){
 					result.sub.literal.data.float_value = t1.sub.literal.data.int_value + t2.sub.literal.data.float_value;
-					result.sub.literal.type = FLOAT;
+					result.subType = LIT_FLOAT;
 				}
-				else if(t1.sub.literal.type == FLOAT && t2.sub.literal.type == FLOAT){
+				else if(t1.subType == LIT_FLOAT && t2.subType == LIT_FLOAT){
 					result.sub.literal.data.float_value = t1.sub.literal.data.float_value + t2.sub.literal.data.float_value;
-					result.sub.literal.type = FLOAT;
+					result.subType = LIT_FLOAT;
 				}
 				break;
 			case OPERATOR_MINUS:
-				if(t1.sub.literal.type == INTEGER && t2.sub.literal.type == INTEGER){
+				if(t1.subType == LIT_INTEGER && t2.subType == LIT_INTEGER){
 					result.sub.literal.data.int_value = t1.sub.literal.data.int_value - t2.sub.literal.data.int_value;
-					result.sub.literal.type = INTEGER;
+					result.subType = LIT_INTEGER;
 				}
-				else if(t1.sub.literal.type == FLOAT && t2.sub.literal.type == INTEGER){
+				else if(t1.subType == LIT_FLOAT && t2.subType == LIT_INTEGER){
 					result.sub.literal.data.float_value = t1.sub.literal.data.float_value - t2.sub.literal.data.int_value;
-					result.sub.literal.type = FLOAT;
+					result.subType = LIT_FLOAT;
 				}
-				else if(t1.sub.literal.type == INTEGER && t2.sub.literal.type == FLOAT){
+				else if(t1.subType == LIT_INTEGER && t2.subType == LIT_FLOAT){
 					result.sub.literal.data.float_value = t1.sub.literal.data.int_value - t2.sub.literal.data.float_value;
-					result.sub.literal.type = FLOAT;
+					result.subType = LIT_FLOAT;
 				}
-				else if(t1.sub.literal.type == FLOAT && t2.sub.literal.type == FLOAT){
+				else if(t1.subType == LIT_FLOAT && t2.subType == LIT_FLOAT){
 					result.sub.literal.data.float_value = t1.sub.literal.data.float_value - t2.sub.literal.data.float_value;
-					result.sub.literal.type = FLOAT;
+					result.subType = LIT_FLOAT;
 				}
 				break;
 			case OPERATOR_MULTIPLY:
-				if(t1.sub.literal.type == INTEGER && t2.sub.literal.type == INTEGER){
+				if(t1.subType == LIT_INTEGER && t2.subType == LIT_INTEGER){
 					result.sub.literal.data.int_value = t1.sub.literal.data.int_value * t2.sub.literal.data.int_value;
-					result.sub.literal.type = INTEGER;
+					result.subType = LIT_INTEGER;
 				}
-				else if(t1.sub.literal.type == FLOAT && t2.sub.literal.type == INTEGER){
+				else if(t1.subType == LIT_FLOAT && t2.subType == LIT_INTEGER){
 					result.sub.literal.data.float_value = t1.sub.literal.data.float_value * t2.sub.literal.data.int_value;
-					result.sub.literal.type = FLOAT;
+					result.subType = LIT_FLOAT;
 				}
-				else if(t1.sub.literal.type == INTEGER && t2.sub.literal.type == FLOAT){
+				else if(t1.subType == LIT_INTEGER && t2.subType == LIT_FLOAT){
 					result.sub.literal.data.float_value = t1.sub.literal.data.int_value * t2.sub.literal.data.float_value;
-					result.sub.literal.type = FLOAT;
+					result.subType = LIT_FLOAT;
 				}
-				else if(t1.sub.literal.type == FLOAT && t2.sub.literal.type == FLOAT){
+				else if(t1.subType == LIT_FLOAT && t2.subType == LIT_FLOAT){
 					result.sub.literal.data.float_value = t1.sub.literal.data.float_value * t2.sub.literal.data.float_value;
-					result.sub.literal.type = FLOAT;
+					result.subType = LIT_FLOAT;
 				}
 				break;
 			case OPERATOR_DIVIDE:
-				if(t1.sub.literal.type == INTEGER && t2.sub.literal.type == INTEGER){
+				if(t1.subType == LIT_INTEGER && t2.subType == LIT_INTEGER){
 					result.sub.literal.data.int_value = t1.sub.literal.data.int_value / t2.sub.literal.data.int_value;
-					result.sub.literal.type = INTEGER;
+					result.subType = LIT_INTEGER;
 				}
-				else if(t1.sub.literal.type == FLOAT && t2.sub.literal.type == INTEGER){
+				else if(t1.subType == LIT_FLOAT && t2.subType == LIT_INTEGER){
 					result.sub.literal.data.float_value = t1.sub.literal.data.float_value / t2.sub.literal.data.int_value;
-					result.sub.literal.type = FLOAT;
+					result.subType = LIT_FLOAT;
 				}
-				else if(t1.sub.literal.type == INTEGER && t2.sub.literal.type == FLOAT){
+				else if(t1.subType == LIT_INTEGER && t2.subType == LIT_FLOAT){
 					result.sub.literal.data.float_value = t1.sub.literal.data.int_value / t2.sub.literal.data.float_value;
-					result.sub.literal.type = FLOAT;
+					result.subType = LIT_FLOAT;
 				}
-				else if(t1.sub.literal.type == FLOAT && t2.sub.literal.type == FLOAT){
+				else if(t1.subType == LIT_FLOAT && t2.subType == LIT_FLOAT){
 					result.sub.literal.data.float_value = t1.sub.literal.data.float_value / t2.sub.literal.data.float_value;
-					result.sub.literal.type = FLOAT;
+					result.subType = LIT_FLOAT;
 				}
 				break;
 			}
@@ -275,7 +275,7 @@ static void parse_variable_decl(void){
 			   equal_token->sub.operator.symbol  == OPERATOR_EQUAL){
 				Token result = parse_expression();
 
-				if(result.sub.literal.type == n_token->sub.keyword.sub.type){
+				if(result.subType == n_token->subType){
 					create_variable(identifier_token, &result);
 				}
 				else{
@@ -305,16 +305,15 @@ static void parse_function_decl(){
 	// function def : fdef func_name(){}
 
 	// Token : fdef
-	Token def_token;
+	Token *def_token;
 	get_next_token(&def_token);
 
-	if(def_token.type == KEYWORD &&
-	   def_token.sub.keyword.sub.type == T_FUNCDEF){
+	if(def_token->type == KEYWORD &&
+	   def_token->subType == KEY_FUNCDEF){
 		// This token is fdef
 		
-		Token function_name;
+		Token *function_name;
 		get_next_token(&function_name);
-		
 	}
 
 }

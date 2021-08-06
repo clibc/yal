@@ -41,12 +41,12 @@ void create_variable(Token *identifier, Token* exp){
 		exit(EXIT_FAILURE);
 	}
 
-	if(exp->sub.literal.type == INTEGER){
-		vars[var_count].type = INTEGER;
+	if(exp->subType == LIT_INTEGER){
+		vars[var_count].type = LIT_INTEGER;
 		vars[var_count].data.int_value = exp->sub.literal.data.int_value; 
 	}
-	else if(exp->sub.literal.type == FLOAT){
-		vars[var_count].type = FLOAT;
+	else if(exp->subType == LIT_FLOAT){
+		vars[var_count].type = LIT_FLOAT;
 		vars[var_count].data.float_value = exp->sub.literal.data.float_value;
 	}
 	

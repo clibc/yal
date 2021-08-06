@@ -6,7 +6,7 @@
 #define MAXNAME_SIZE 10
 
 typedef struct{
-	Literal_SB type;
+	TokenSubType type;
 	char name[MAXNAME_SIZE];
 
 	union{
