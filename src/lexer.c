@@ -25,13 +25,13 @@ static int check_whitespace(char c){
 
 static TokenSubType check_keyword(char* word){
 	if(strcmp(word, KEYWORD_INT) == 0){
-		return KEY_INTEGER; 
+		return LIT_INTEGER; 
 	}
 	else if(strcmp(word, KEYWORD_FLOAT) == 0){
-	    return KEY_FLOAT;
+	    return LIT_FLOAT;
 	}
 	else if(strcmp(word, KEYWORD_STRING) == 0){
-	    return KEY_STRING;
+	    return LIT_STRING;
 	}
 	else if(strcmp(word, KEYWORD_FUNCDEF) == 0){
 	    return KEY_FUNCDEF;
@@ -189,7 +189,7 @@ void dump_tokens(){
 	for(int i = 0; i < tokenCounter; ++i){
 		Token *token = &tokens[i];
 		printf("Token type : ");
-		switch(token->subType){
+		switch(token->type){
 		case LITERAL:
 			switch(token->subType){
 			case LIT_INTEGER:
