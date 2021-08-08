@@ -28,9 +28,11 @@ typedef enum {
 	LIT_FLOAT,
 	LIT_STRING,
 
-	KEY_INTEGER,
-	KEY_FLOAT,
-	KEY_STRING,
+	// we do not use these for keywords of literals, instead we use lit_ ones
+	// it makes simple to compare type against value (like int a = 32)
+	//KEY_INTEGER,
+	//KEY_FLOAT,
+	//KEY_STRING,
 	KEY_FUNCDEF
 } TokenSubType;
 
@@ -50,9 +52,6 @@ typedef struct{
 
 typedef struct{
 	char string[15];
-	//union {
-	//	Keyword_SB type;
-	//}sub;
 } Keyword_Token;
 
 typedef struct{

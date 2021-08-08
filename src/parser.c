@@ -314,6 +314,30 @@ static void parse_function_decl(){
 		
 		Token *function_name;
 		get_next_token(&function_name);
+
+		if(function_name->type == IDENTIFIER){
+
+			Token *parOpen;
+			get_next_token(&parOpen);
+			if(parOpen->type == SEPERATOR &&
+			   parOpen->sub.operator.symbol == LEFT_PAR){
+				// openPar present
+
+				Token *afterParToken;
+
+				for(;;){
+					get_next_token(&afterParToken);
+					if(afterParToken->type != SEPERATOR &&
+					   afterParToken->sub.operator.symbol != RIGHT_PAR)
+						break;
+
+					//					if(afterParToken.type == KEYWORD && )
+				}
+				
+			}
+
+			
+		}
 	}
 
 }

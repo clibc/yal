@@ -236,6 +236,7 @@ int get_next_token(Token **token){
 		return 1;
 	}
 	printf("ERROR: Ran out of tokens\n");
+	exit(1);
 	return 0;
 }
 
